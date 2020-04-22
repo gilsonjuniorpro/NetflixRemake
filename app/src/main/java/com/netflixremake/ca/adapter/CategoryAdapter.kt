@@ -17,8 +17,8 @@ class CategoryAdapter (
     private val items: List<Category>
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    lateinit var layoutManager: LinearLayoutManager
-    lateinit var context: Context
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         layoutManager = LinearLayoutManager(parent.context, RecyclerView.HORIZONTAL, false)

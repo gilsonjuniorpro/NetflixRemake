@@ -18,7 +18,7 @@ import kotlinx.coroutines.*
 
 class MovieActivity : AppCompatActivity() {
 
-    var movies: MutableList<Movie> = emptyList<Movie>().toMutableList()
+    private var movies: MutableList<Movie> = emptyList<Movie>().toMutableList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,30 +33,30 @@ class MovieActivity : AppCompatActivity() {
 
         val movie = intent.getParcelableExtra<Movie>(EXTRA_MOVIE)
 
-        var drawable: LayerDrawable = ContextCompat.getDrawable(baseContext, R.drawable.shadows) as LayerDrawable
+        val drawable: LayerDrawable = ContextCompat.getDrawable(baseContext, R.drawable.shadows) as LayerDrawable
         lifecycleScope.launch { // runs on Main by default
-            var movieCover = withContext(Dispatchers.IO) {
-                Coil.get(movie.posterUrl!!)
+            val movieCover = withContext(Dispatchers.IO) {
+                Coil.run { get(movie?.posterUrl!!) }
             }
             drawable.setDrawableByLayerId(R.id.cover_drawable, movieCover)
             ivCover.setImageDrawable(drawable)
         }
 
-        tvMovieName.text = movie.title
-        tvDescription.text = movie.description
-        tvCast.text = getString(R.string.cast, movie.cast)
+        tvMovieName.text = movie?.title
+        tvDescription.text = movie?.description
+        tvCast.text = getString(R.string.cast, movie?.cast)
 
         for (i in 1..30) {
-            var movie = movies.run {
+            val movieList = movies.run {
                 Movie(
-                    movie.title,
-                    movie.description,
-                    movie.cast,
-                    movie.coverUrl,
-                    movie.posterUrl
+                    movie?.title,
+                    movie?.description,
+                    movie?.cast,
+                    movie?.coverUrl,
+                    movie?.posterUrl
                 )
             }
-            movies.add(movie)
+            movies.add(movieList)
         }
 
         recyclerSimilar.adapter = SimilarAdapter(movies)
