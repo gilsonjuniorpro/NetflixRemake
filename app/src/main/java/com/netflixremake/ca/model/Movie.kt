@@ -8,5 +8,6 @@ class Movie (
     val title: String?,
     val description: String?,
     val cast: String?,
-    val coverUrl: String?
+    val coverUrl: String?,
+    val posterUrl: String?
 ): Parcelable

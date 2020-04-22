@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.Coil
 import coil.api.get
@@ -13,10 +14,7 @@ import com.netflixremake.ca.R
 import com.netflixremake.ca.adapter.SimilarAdapter
 import com.netflixremake.ca.model.Movie
 import kotlinx.android.synthetic.main.activity_movie.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class MovieActivity : AppCompatActivity() {
 
@@ -35,10 +33,10 @@ class MovieActivity : AppCompatActivity() {
 
         val movie = intent.getParcelableExtra<Movie>(EXTRA_MOVIE)
 
-        GlobalScope.launch {
-            var drawable: LayerDrawable = ContextCompat.getDrawable(baseContext, R.drawable.shadows) as LayerDrawable
+        var drawable: LayerDrawable = ContextCompat.getDrawable(baseContext, R.drawable.shadows) as LayerDrawable
+        lifecycleScope.launch { // runs on Main by default
             var movieCover = withContext(Dispatchers.IO) {
-                 Coil.get(movie.coverUrl!!)
+                Coil.get(movie.posterUrl!!)
             }
             drawable.setDrawableByLayerId(R.id.cover_drawable, movieCover)
             ivCover.setImageDrawable(drawable)
@@ -54,7 +52,8 @@ class MovieActivity : AppCompatActivity() {
                     movie.title,
                     movie.description,
                     movie.cast,
-                    movie.coverUrl
+                    movie.coverUrl,
+                    movie.posterUrl
                 )
             }
             movies.add(movie)
